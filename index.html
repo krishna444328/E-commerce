@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myntra E-Commerce</title>
+    <style>
+        /* Resetting basic styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color:gray;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* Header styling */
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        header .logo h1 {
+            margin: 0;
+        }
+
+        .cart-badge {
+            background-color: #ff5722;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 10px;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-badge img {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-left: 5px;
+        }
+
+        header nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        header nav ul li {
+            margin-left: 20px;
+            position: relative;
+        }
+
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Dropdown Button */
+        header nav ul li:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #575757;
+        }
+
+        /* Main Content */
+        main {
+            padding: 20px;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .product-card {
+            width: 200px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card img {
+            width: 100%;
+            border-radius: 8px;
+            background-color: #ff5722;
+        }
+
+        .product-card h3 {
+            margin: 10px 0;
+        }
+
+        .product-card p {
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .product-card button {
+            padding: 10px 20px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .product-card button:hover {
+            background-color: #e64a19;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Cart Modal Styling */
+        .cart-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding-top: 60px;
+            overflow-y: auto;
+        }
+
+        .cart-modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .cart-modal-header {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .cart-items {
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+        .cart-item h4 {
+            margin: 0;
+        }
+
+        .close-cart {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-cart:hover,
+        .close-cart:focus {
+            color: black;
+            text-decoration: none;
+        }
+        .cart-badge {
+    background-color: #ff5722;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px; /* Adjust font size */
+    position: relative;
+}
+
+.cart-badge img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-left: 5px;
+}
+.product-card button {
+            padding: 10px 20px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-card button:hover {
+            background-color: #e64a19;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Buy Now Modal Styling */
+        .buy-now-modal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding-top: 60px;
+        }
+
+        .buy-now-modal-content {
+            background-color: white;
+            margin: -5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .buy-now-modal-header {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .buy-now-modal-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .buy-now-modal form input, .buy-now-modal form textarea, .buy-now-modal form button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Ensuring the buttons are aligned properly */
+        .buy-now-modal-footer button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .buy-now-modal-footer button[type="button"] {
+            background-color: #f44336; /* Cancel button */
+        }
+.buttons{
+    background-color: #333;
+}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <h1>Myntra</h1>
+            <span id="cart-badge" class="cart-badge" onclick="openCartModal()">0</span> <!-- Cart badge -->
+            
+        </div>
+        <nav>
+            <ul>
+                <li>
+                    <a href="#">Home</a>
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-content">
+                        <a href="#">Option 1</a>
+                        <a href="#">Option 2</a>
+                        <a href="#">Option 3</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Men</a>
+                    <!-- Dropdown Menu for Men -->
+                    <div class="dropdown-content">
+                        <a href="#">Shirts</a>
+                        <a href="#">T-Shirts</a>
+                        <a href="#">Jeans</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Women</a>
+                    <!-- Dropdown Menu for Women -->
+                    <div class="dropdown-content">
+                        <a href="#">Dresses</a>
+                        <a href="#">Tops</a>
+                        <a href="#">Skirts</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Kids</a>
+                    <!-- Dropdown Menu for Kids -->
+                    <div class="dropdown-content">
+                        <a href="#">Boys</a>
+                        <a href="#">Girls</a>
+                    </div>
+                </li>
+                <!-- <li>
+                    <a href="#">Offers</a>
+                     Dropdown Menu for Offers -->
+                    <!-- <div class="dropdown-content">
+                        <a href="#">Season Sale</a>
+                        <a href="#">Clearance Sale</a>
+                        <a href="#">New Arrivals</a>
+                    </div>
+                </li> --> 
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="product-container">
+            <div class="product-card" onclick="showProductDetails('Product Name 1', 'This is a detailed description of Product 1.', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">
+                <img src="https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg" alt="Product 1">
+                <h3>Product Name 1</h3>
+                <p>$50</p>
+                <button onclick="openBuyNowModal('Product Name 1', 'This is a detailed description of Product 1.', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">
+                    <img class="buy-now-logo" src="https://image.shutterstock.com/image-vector/shopping-cart-icon-vector-260nw-1454203816.jpg" alt="Buy Now">
+                </button>
+                <button onclick="addToCart('Product Name 1', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">Add to Cart</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('Product Name 2', 'This is a detailed description of Product 2.', 60, 'https://via.placeholder.com/200')">
+                <img src="https://cdn.linenclub.com/media/catalog/product/cache/d8d099ed0f54be45d4eb2c71c1a3b40d/l/c/lcmsf618pr10730-b8_0.jpg" alt="Product 2">
+                <h3>Product Name 2</h3>
+                <p>$60</p>
+                <button onclick="openBuyNowModal('Product Name 1', 'This is a detailed description of Product 1.', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">
+                    <img class="buy-now-logo" src="https://image.shutterstock.com/image-vector/shopping-cart-icon-vector-260nw-1454203816.jpg" alt="Buy Now">
+                </button>
+                <button onclick="addToCart('Product Name 2', 60, 'https://via.placeholder.com/200')">Add to Cart</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('Product Name 3', 'This is a detailed description of Product 3.', 40, 'https://via.placeholder.com/200')">
+                <img src="https://tigc.in/cdn/shop/files/compress_0721-sh95-light-green__1.jpg?v=1720766386&width=1000" alt="Product 3">
+                <h3>Product Name 3</h3>
+                <p>$40</p>
+                <button onclick="openBuyNowModal('Product Name 1', 'This is a detailed description of Product 1.', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">
+                    <img class="buy-now-logo" src="https://image.shutterstock.com/image-vector/shopping-cart-icon-vector-260nw-1454203816.jpg" alt="Buy Now">
+                </button>
+                <button onclick="addToCart('Product Name 3', 40, 'https://via.placeholder.com/200')">Add to Cart</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('Product Name 1', 'This is a detailed description of Product 1.', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">
+                <img src="https://cdn.shopify.com/s/files/1/0633/4611/4795/files/32488-1_LIVE_OL1184-1_1_9860641c-7091-46f5-8fe1-9b5c5ed35045_350x.jpg?v=1732276555" alt="Product 1">
+                <h3>Product Name 4</h3>
+                <p>$50</p>
+                <button onclick="openBuyNowModal('Product Name 1', 'This is a detailed description of Product 1.', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">
+                    <img class="buy-now-logo" src="https://image.shutterstock.com/image-vector/shopping-cart-icon-vector-260nw-1454203816.jpg" alt="Buy Now">
+                </button>
+                <button onclick="addToCart('Product Name 1', 50, 'https://via.placeholder.com/200')">Add to Cart</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('Product Name 2', 'This is a detailed description of Product 2.', 60, 'https://via.placeholder.com/200')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlO-7Cnia5OdgfcpPKoC6aO3Zf9M-ZNyUGRw&s" alt="Product 2">
+                <h3>Product Name 5</h3>
+                <p>$60</p>
+                <button onclick="openBuyNowModal('Product Name 1', 'This is a detailed description of Product 1.', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">
+                    <img class="buy-now-logo" src="https://image.shutterstock.com/image-vector/shopping-cart-icon-vector-260nw-1454203816.jpg" alt="Buy Now">
+                </button>
+                <button onclick="addToCart('Product Name 2', 60, 'https://via.placeholder.com/200')">Add to Cart</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('Product Name 3', 'This is a detailed description of Product 3.', 40, 'https://via.placeholder.com/200')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjxd1KR5HSQQDeCaw5CocHZhj_pZh5mB67Tw&s" alt="Product 3">
+                <h3>Product Name 6</h3>
+                <p>$40</p>
+                <button onclick="openBuyNowModal('Product Name 1', 'This is a detailed description of Product 1.', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">
+                    <img class="buy-now-logo" src="https://image.shutterstock.com/image-vector/shopping-cart-icon-vector-260nw-1454203816.jpg" alt="Buy Now">
+                </button>
+                <button onclick="addToCart('Product Name 3', 40, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjxd1KR5HSQQDeCaw5CocHZhj_pZh5mB67Tw&s')">Add to Cart</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('Product Name 1', 'This is a detailed description of Product 1.', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_aHirwJKn0YA4FdETNFmGl7ngDBwdrgbEaw&s" alt="Product 1">
+                <h3>Product Name 7</h3>
+                <p>$50</p>
+                <button onclick="openBuyNowModal('Product Name 1', 'This is a detailed description of Product 1.', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">
+                    <img class="buy-now-logo" src="https://image.shutterstock.com/image-vector/shopping-cart-icon-vector-260nw-1454203816.jpg" alt="Buy Now">
+                </button>
+                <button onclick="addToCart('Product Name 1', 50, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_aHirwJKn0YA4FdETNFmGl7ngDBwdrgbEaw&s')">Add to Cart</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('Product Name 2', 'This is a detailed description of Product 2.', 60, 'https://via.placeholder.com/200')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuKVh7NFpthGen5DvGvYevSB_-vOtuZkk8fw&s" alt="Product 2">
+                <h3>Product Name 8</h3>
+                <p>$60</p>
+                <button onclick="openBuyNowModal('Product Name 1', 'This is a detailed description of Product 1.', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">
+                    <img class="buy-now-logo" src="https://image.shutterstock.com/image-vector/shopping-cart-icon-vector-260nw-1454203816.jpg" alt="Buy Now">
+                </button>
+                <button onclick="addToCart('Product Name 2', 60, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyr888I1tEXI4qklvz8zRujhpF63GWOZYv-w&s')">Add to Cart</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('Product Name 3', 'This is a detailed description of Product 3.', 40, 'https://via.placeholder.com/200')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqkCoTtvlbM7OjxYoQD3llbjSdPwgXaPGDGg&s" alt="Product 3">
+                <h3>Product Name 9</h3>
+                <p>$40</p>
+                <button onclick="openBuyNowModal('Product Name 1', 'This is a detailed description of Product 1.', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">
+                    <img class="buy-now-logo" src="https://image.shutterstock.com/image-vector/shopping-cart-icon-vector-260nw-1454203816.jpg" alt="Buy Now">
+                </button>
+                <button onclick="addToCart('Product Name 3', 40, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqkCoTtvlbM7OjxYoQD3llbjSdPwgXaPGDGg&s')">Add to Cart</button>
+            </div>
+            <div class="product-card" onclick="showProductDetails('Product Name 3', 'This is a detailed description of Product 3.', 40, 'https://via.placeholder.com/200')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIjm_Qp1yPtsqT-d5VqHZnZvfQ3hDnKQEUSQ&s" alt="Product 3">
+                <h3>Product Name 10</h3>
+                <p>$40</p>
+                <button onclick="openBuyNowModal('Product Name 1', 'This is a detailed description of Product 1.', 50, 'https://images-cdn.ubuy.co.in/63400407ad052c2c656c7cd6-lelebear-stretch-anti-wrinkle-shirt-men.jpg')">
+                    <img class="buy-now-logo" src="https://image.shutterstock.com/image-vector/shopping-cart-icon-vector-260nw-1454203816.jpg" alt="Buy Now">
+                </button>
+                <button onclick="addToCart('Product Name 3', 40, 'https://via.placeholder.com/200')">Add to Cart</button>
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Myntra E-Commerce. All rights reserved.</p>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="cart-modal">
+        <div class="cart-modal-content">
+            <span class="close-cart" onclick="closeCartModal()">&times;</span>
+            <div class="cart-modal-header">Your Cart</div>
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-footer">
+                <button onclick="clearCart()">Clear Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buy Now Modal with Form -->
+    <div id="buyNowModal" class="buy-now-modal">
+        <div class="buy-now-modal-content">
+            <div class="buy-now-modal-header">
+                <h2>Purchase Details</h2>
+            </div>
+            <form id="purchaseForm">
+                <div id="buyNowDetails"></div>
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+                <label for="address">Shipping Address:</label>
+                <textarea id="address" name="address" placeholder="Enter your shipping address" required></textarea>
+
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+
+                <div class="buy-now-modal-footer">
+                    <button type="button" onclick="closeBuyNowModal()">Cancel</button>
+                    <button type="submit">Confirm Purchase</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<script>
+    // Function to add products to cart
+    function addToCart(productName, price, productImage) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+        // Add the new product to the cart
+        cart.push({ productName, price, productImage });
+    
+        // Save the updated cart to localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+    
+        // Update the cart badge count and image
+        updateCartBadge();
+    }
+    
+    // Function to update the cart badge count and image
+    function updateCartBadge() {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartBadge = document.getElementById('cart-badge');
+        const itemCount = cart.length;
+    
+        if (itemCount > 0) {
+            // Get the image of the last added item
+            const itemImage = cart[cart.length - 1].productImage;
+            
+            // Display both the count and the image
+            cartBadge.innerHTML = `${itemCount} <img src="${itemImage}" alt="Product Image">`;
+        } else {
+            cartBadge.innerHTML = '0'; // No products in cart
+        }
+    }
+    
+    // Function to open the cart modal
+    function openCartModal() {
+        document.getElementById('cartModal').style.display = 'block';
+        displayCartItems();
+    }
+    
+    // Function to close the cart modal
+    function closeCartModal() {
+        document.getElementById('cartModal').style.display = 'none';
+    }
+    
+    // Function to display cart items in the modal
+    function displayCartItems() {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartItemsContainer = document.getElementById('cartItems');
+        cartItemsContainer.innerHTML = '';
+    
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+        } else {
+            cart.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `<h4>${item.productName}</h4><p>$${item.price}</p>`;
+                cartItemsContainer.appendChild(cartItem);
+            });
+        }
+    }
+    
+    // Function to clear the cart
+    function clearCart() {
+        localStorage.removeItem('cart');
+        updateCartBadge();
+        displayCartItems();
+    }
+    
+    // Initialize cart badge count and cart items when the page loads
+    window.onload = function() {
+        updateCartBadge();
+        displayCartItems();
+    };
+    // Open the Buy Now modal and populate product details
+    function openBuyNowModal(productName, description, price, image) {
+            const modal = document.getElementById('buyNowModal');
+            const details = document.getElementById('buyNowDetails');
+            details.innerHTML = `
+                <img src="${image}" alt="${productName}" style="width: 100px; height: 100px;">
+                <h3>${productName}</h3>
+                <p>${description}</p>
+                <p><strong>Price: $${price}</strong></p>
+            `;
+            modal.style.display = 'block';
+        }
+
+        // Close the Buy Now modal
+        function closeBuyNowModal() {
+            document.getElementById('buyNowModal').style.display = 'none';
+        }
+
+        // Handle form submission
+        document.getElementById('purchaseForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent form from submitting normally
+
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+
+            alert(`Thank you for your purchase, ${name}!\nYour order will be shipped to: ${address}\nYou will be contacted at: ${phone}`);
+            
+            // Close the modal after confirmation
+            closeBuyNowModal();
+        });
+
+</script>     
+</body>
+</html>
